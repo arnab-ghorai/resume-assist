@@ -1,5 +1,9 @@
 console.log("resume-builder");
 
+function redirectToResumePage() {
+  window.location.href = "resume.html";
+}
+
 //sidebar
 
 const sidebar = document.querySelector(".links-cont");

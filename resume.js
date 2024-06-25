@@ -166,17 +166,17 @@ function generateResume() {
 }
 
 async function downloadPDF() {
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF("p", "pt", "a4");
-  const resume = document.getElementById("resume");
+  const element = document.getElementById("resume");
 
-  const canvas = await html2canvas(resume, { scale: 2 });
-  const imgData = canvas.toDataURL("image/jpeg", 0.5);
+  const opt = {
+    margin: [0, 0.5, 0, 0.5], // Margin: [top, left, bottom, right]
+    filename: "resume.pdf",
+    image: { type: "jpeg", quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+    pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+    enableLinks: true, // Enable clickable links
+  };
 
-  const imgProps = pdf.getImageProperties(imgData);
-  const pdfWidth = pdf.internal.pageSize.getWidth();
-  const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-  pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-  pdf.save("resume.pdf");
+  html2pdf().from(element).set(opt).save();
 }
